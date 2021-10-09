@@ -1,0 +1,36 @@
+﻿@model HardwareStore.Models.User.LoginViewModel
+
+<div class="product-big-title-area">
+    <div class="product-bit-title text-center">
+        <h2>Авторизация</h2>
+    </div>
+</div>
+
+<div class="single-product-area">
+    <div class="container">
+        <form class="col-md-9" asp-action="Login" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Email">E-mail</label>
+                    <input asp-for="Email" type="text" class="form-control" placeholder="E-mail">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Password">Пароль</label>
+                    <input asp-for="Password" type="password" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <input type="checkbox">
+                    <label asp-for="RememberMe">Запомнить меня</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+    </div>
+</div>

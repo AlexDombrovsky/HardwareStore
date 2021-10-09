@@ -1,0 +1,6 @@
+﻿@model HardwareStore.Models.Cart.CartIconViewModel
+<div class="col-sm-6">
+    <div class="shopping-item">
+        <a asp-controller="Order" asp-action="Index">Корзина - <span class="cart-amunt">$@Model.Total</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">@Model.ProductsCount</span></a>
+    </div>
+</div>

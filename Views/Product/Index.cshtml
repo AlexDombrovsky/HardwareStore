@@ -1,0 +1,78 @@
+﻿@using System.Security.Claims
+@model HardwareStore.Models.Products.ProductPaginationViewModel
+
+@{
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+
+<div class="product-big-title-area">
+    <div class="product-bit-title text-center">
+        <h2>Магазин</h2>
+    </div>
+</div>
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-3">
+                    <div class="single-shop-product">
+                        <div class="product-upper">
+                            <img src="@item.Photos.FirstOrDefault()?.Path">
+                        </div>
+                        <h2><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></h2>
+                        <div class="product-carousel-price">
+                            <ins>$@item.Price</ins>
+                        </div>
+                        <div class="product-option-shop">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="add_to_cart_button" asp-controller="Order" asp-action="AddToCart" asp-route-id="@item.Id" asp-route-returnUrl="@returnUrl">В корзину</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Account" asp-action="Login" class="add_to_cart_button">В корзину</a>
+                                }
+                                @if (User.Identity.IsAuthenticated && User.HasClaim(ClaimTypes.Role, "Admin"))
+                                {
+                                    <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" asp-route-page="@Model.Pager.CurrentPage"><i class="fa fa-remove"></i></a>
+                                }
+                            </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-pagination text-center">
+                    <nav>
+                        <ul class="pagination justify-content-end">
+                            @if (Model.Pager.EndPage > 1)
+                            {
+                                @if (Model.Pager.CurrentPage > 1)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="Index">Перв.</a></li>
+                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.Pager.CurrentPage - 1)">Пред.</a></li>
+                                }
+
+                                @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                {
+                                    <li class="page-item @(page == Model.Pager.CurrentPage ? "active" : "")"><a class="page-link" asp-action="Index" asp-route-page="@(page)">@(page)</a></li>
+
+                                }
+
+                                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                {
+                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.Pager.CurrentPage + 1)">След.</a></li>
+                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-page="@(Model.Pager.TotalPages)">Послед.</a></li>
+                                }
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

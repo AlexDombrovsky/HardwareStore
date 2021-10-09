@@ -1,0 +1,65 @@
+﻿@model HardwareStore.Models.Products.ProductViewModel
+
+@{
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+
+<div class="product-big-title-area">
+    <div class="product-bit-title text-center">
+        <h2>Магазин</h2>
+    </div>
+</div>
+
+<div class="single-product-area">
+    <div class="container">
+        <div class="row">
+
+            @await Component.InvokeAsync("LatestProductsDetails")
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="product-images">
+                            <div class="product-main-img">
+                                <img src="@Model.Photos.FirstOrDefault()?.Path" alt="">
+                            </div>
+
+                            <div class="product-gallery">
+                                @foreach (var photo in Model.Photos)
+                                {
+                                    <img src="@photo.Path" alt="">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="product-inner">
+                            <h2 class="product-name">@Model.Name</h2>
+                            <div class="product-inner-price">
+                                <ins>$@Model.Price</ins>
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Order" asp-action="AddToCart" asp-route-id="@Model.Id" asp-route-returnUrl="@returnUrl" class="add_to_cart_button">В корзину</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" class="add_to_cart_button">В корзину</a>
+                            }
+                            <div role="tabpanel">
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                        <br />
+                                        <p>@Model.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                @await Component.InvokeAsync("RelatedProducts")
+            </div>
+        </div>
+    </div>
+</div>

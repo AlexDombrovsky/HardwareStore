@@ -1,0 +1,34 @@
+﻿@model List<HardwareStore.Models.Products.ProductViewModel>
+
+@{
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+
+<div class="related-products-wrapper">
+    <h2 class="related-products-title">Вас может заинтересовать</h2>
+    <div class="related-products-carousel">
+        @foreach (var item in Model)
+        {
+            <div class="single-product">
+                <div class="product-f-image">
+                    <img src="@item.Photos.FirstOrDefault().Path" alt="">
+                    <div class="product-hover">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Order" asp-action="AddToCart" asp-route-id="@item.Id" asp-route-returnUrl="@returnUrl" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>В корзину</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i>В корзину</a>
+                        }
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id" class="view-details-link"><i class="fa fa-link"></i>Просмотреть</a>
+                    </div>
+                </div>
+                <h2><a href="">@item.Name</a></h2>
+                <div class="product-carousel-price">
+                    <ins>$@item.Price</ins>
+                </div>
+            </div>
+        }
+    </div>
+</div>

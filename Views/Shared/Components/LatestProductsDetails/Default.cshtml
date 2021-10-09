@@ -1,0 +1,16 @@
+﻿@model List<HardwareStore.Models.Products.ProductViewModel>
+<div class="col-md-4">
+    <div class="single-sidebar">
+        <h2 class="sidebar-title">Недавно добавленные</h2>
+        @foreach (var item in Model)
+        {
+            <div class="thubmnail-recent">
+                <img src="@item.Photos.FirstOrDefault()?.Path" class="recent-thumb" alt="">
+                <h2><a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></h2>
+                <div class="product-sidebar-price">
+                    <ins>$@item.Price</ins>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@model HardwareStore.Models.Cart.CartViewModel
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+
+            @await Component.InvokeAsync("LatestProductsDetails")
+
+            <div class="col-md-8">
+                <div class="product-content-right">
+                    <div class="woocommerce">
+                        <form method="post" action="#">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-remove">&nbsp;</th>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Товар</th>
+                                        <th class="product-price">Цена</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Orders)
+                                    {
+                                        <tr class="cart_item">
+                                            <td class="product-remove">
+                                                <a title="Remove this item" class="remove" asp-controller="Order" asp-action="RemoveFromCart" asp-route-id="@item.Id">×</a>
+                                            </td>
+
+                                            <td class="product-thumbnail">
+                                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@item.Product.Photos.FirstOrDefault()?.Path"></a>
+                                            </td>
+
+                                            <td class="product-name">
+                                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">@item.Product.Name</a>
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">$@item.Product.Price</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </form>
+
+                        <div class="cart-collaterals">
+                            <div class="cart_totals ">
+                                <h2>Стоимость заказа</h2>
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="order-total">
+                                            <th>Полная стоимость</th>
+                                            <td><strong><span class="amount">$@Model.Total</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
